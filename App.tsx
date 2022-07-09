@@ -13,6 +13,7 @@ function App() {
   const [prepareData, setPrepareData] = useState<IObj[]>([]);
   const [enteredURL, setEnteredURL] = useState<string>("");
   const [notAllowed, setNotAllowed] = useState<boolean>(false);
+  const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
     if (demofile && ld.size(demofile)) {
@@ -56,11 +57,20 @@ function App() {
     }
   }, [demofile]);
 
+  const onReset = () => {
+    setDemoFile();
+    setPrepareData([]);
+    setEnteredURL("");
+    setNotAllowed(false);
+  };
+
+  const callback = () => onReset();
+
   const fetchData = async () => {
     setNotAllowed(true);
 
     try {
-      const newURL = PROXY + enteredURL
+      const newURL = PROXY + enteredURL;
       const jsonResponse = await fetch(newURL);
       const data = await jsonResponse.json();
 
@@ -69,25 +79,33 @@ function App() {
       } else {
         setDemoFile(file);
       }
-      
+
       setNotAllowed(false);
     } catch (error) {
       const msg = error.message || "Please enter a valid URL!";
+
       alert(msg);
       setEnteredURL("");
       setNotAllowed(false);
+      
       throw new Error(msg);
     }
   };
 
   const convertToCSV = () => {
     const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
+
     if (isValid) {
       setNotAllowed(true);
-      const callback = () => setNotAllowed(false);
       generateCSV(csvHeader, prepareData, FILE_NAME, callback);
     }
   };
+
+  useEffect(() => {
+    if (prepareData.length > 0) {
+      convertToCSV();
+    }
+  }, [prepareData]);
 
   const isDisabled = useMemo(() => {
     return (enteredURL as string).trim().length === 0 || notAllowed;
@@ -120,7 +138,7 @@ function App() {
               className={`btn-gen ${isDisabled ? "is-disabled" : ""}`}
               onClick={convertToCSV}
             >
-              Convert
+              Download
             </button>
           )}
         </div>
