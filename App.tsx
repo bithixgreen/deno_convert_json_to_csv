@@ -60,7 +60,11 @@ function App() {
     setNotAllowed(true);
 
     try {
-      const jsonResponse = await fetch(enteredURL);
+      const jsonResponse = await fetch(enteredURL, {
+        method: "GET",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+      });
       const data = await jsonResponse.json();
 
       if (data) {
@@ -68,6 +72,7 @@ function App() {
       } else {
         setDemoFile(file);
       }
+      
       setNotAllowed(false);
     } catch (error) {
       const msg = error.message || "Please enter a valid URL!";
