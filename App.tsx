@@ -1,7 +1,6 @@
 import { React } from "./deps.ts";
 import { useState, useEffect, useMemo } from "https://jspm.dev/react@17.0.0";
 import { ld } from "https://f7oz6xcbryzf3ky2vfb3y7u7x3iq4rg2gyxfnq4s7nt54ofe6rpa.arweave.net/L92fXEGOMl2rGqlDvH6fvtEORNo2LlbDkvtn3jik9F4/mod.ts";
-import axiod from "https://deno.land/x/axiod@0.26.1/mod.ts";
 
 import { generateCSV } from "./util/index.ts";
 import file from "./static/data/2022-07-01_Acton-Health-Insurance-Trust-HPHC_index.json" assert { type: "json" };
@@ -61,7 +60,9 @@ function App() {
     setNotAllowed(true);
 
     try {
-      const { data } = await axiod.get(enteredURL);
+      const jsonResponse = await fetch(enteredURL);
+      const data = await jsonResponse.json();
+
       if (data) {
         setDemoFile(data);
       } else {
