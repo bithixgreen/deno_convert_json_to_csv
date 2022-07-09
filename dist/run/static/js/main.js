@@ -27389,7 +27389,13 @@ function App() {
         setEnteredURL("");
         setNotAllowed(false);
     };
-    const callback = ()=>onReset();
+    const callback = ()=>{
+        onReset();
+        setLogs((oldData)=>[
+                ...oldData,
+                enteredURL
+            ]);
+    };
     const fetchData = async ()=>{
         setNotAllowed(true);
         try {
@@ -27417,13 +27423,6 @@ function App() {
             generateCSV(csvHeader, prepareData, FILE_NAME, callback);
         }
     };
-    useEffect(()=>{
-        if (prepareData.length > 0) {
-            convertToCSV();
-        }
-    }, [
-        prepareData
-    ]);
     const isDisabled = useMemo(()=>{
         return enteredURL.trim().length === 0 || notAllowed;
     }, [
@@ -27450,6 +27449,14 @@ function App() {
     }, "Fetch"), prepareData.length > 0 && react.createElement("button", {
         className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
         onClick: convertToCSV
-    }, "Download"))));
+    }, "Download")), logs.length > 0 && react.createElement("div", {
+        className: "wrap no-border"
+    }, react.createElement("h3", null, "Logs:"), react.createElement("div", {
+        className: "logs"
+    }, lodash.map(logs, (logItem, index)=>react.createElement("p", {
+            key: index
+        }, index + 1, ". ", react.createElement("a", {
+            href: logItem
+        }, logItem)))))));
 }
 mod1.render(react.createElement(rest.StrictMode, null, react.createElement(App, null)), document.getElementById('root'));

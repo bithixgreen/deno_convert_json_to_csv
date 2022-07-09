@@ -64,7 +64,10 @@ function App() {
     setNotAllowed(false);
   };
 
-  const callback = () => onReset();
+  const callback = () => {
+    onReset();
+    setLogs((oldData: string[]) => [...oldData, enteredURL]);
+  };
 
   const fetchData = async () => {
     setNotAllowed(true);
@@ -87,7 +90,7 @@ function App() {
       alert(msg);
       setEnteredURL("");
       setNotAllowed(false);
-      
+
       throw new Error(msg);
     }
   };
@@ -100,12 +103,6 @@ function App() {
       generateCSV(csvHeader, prepareData, FILE_NAME, callback);
     }
   };
-
-  useEffect(() => {
-    if (prepareData.length > 0) {
-      convertToCSV();
-    }
-  }, [prepareData]);
 
   const isDisabled = useMemo(() => {
     return (enteredURL as string).trim().length === 0 || notAllowed;
@@ -142,6 +139,18 @@ function App() {
             </button>
           )}
         </div>
+        {logs.length > 0 && (
+          <div className="wrap no-border">
+            <h3>Logs:</h3>
+            <div className="logs">
+              {ld.map(logs, (logItem: string, index: number) => (
+                <p key={index}>
+                  {index + 1}. <a href={logItem}>{logItem}</a>
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

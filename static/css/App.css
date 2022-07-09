@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   min-height: 100vh;
 }
 
@@ -14,6 +15,26 @@
   border: 1px dashed #aaa;
   padding: 50px 10px;
 }
+.wrap.no-border {
+  align-items: flex-start;
+  border-color: transparent;
+  padding: 30px 10px 10px;
+  gap: 0;
+}
+
+.wrap.no-border h3 {
+  padding: 0;
+  margin: 0 0 20px !important;
+  position: relative;
+  left: -10px;
+}
+
+.wrap.no-border p {
+  padding: 0;
+  margin: 0 0 10px !important;
+  position: relative;
+  left: -10px;
+}
 
 .input-size {
   width: 90%;
@@ -25,7 +46,7 @@
 
 .btn-gen {
   border: 1px solid #000;
-  width: 90%;
+  width: 30%;
   height: 40px;
   background-color: #000;
   cursor: pointer;
