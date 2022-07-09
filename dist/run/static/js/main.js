@@ -27355,6 +27355,7 @@ function App() {
     const [prepareData, setPrepareData] = useState([]);
     const [enteredURL, setEnteredURL] = useState("");
     const [notAllowed, setNotAllowed] = useState(false);
+    const [logs, setLogs] = useState([]);
     useEffect(()=>{
         if (demofile && lodash.size(demofile)) {
             const data = [];
@@ -27382,6 +27383,13 @@ function App() {
     }, [
         demofile
     ]);
+    const onReset = ()=>{
+        setDemoFile();
+        setPrepareData([]);
+        setEnteredURL("");
+        setNotAllowed(false);
+    };
+    const callback = ()=>onReset();
     const fetchData = async ()=>{
         setNotAllowed(true);
         try {
@@ -27406,10 +27414,16 @@ function App() {
         const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
         if (isValid) {
             setNotAllowed(true);
-            const callback = ()=>setNotAllowed(false);
             generateCSV(csvHeader, prepareData, FILE_NAME, callback);
         }
     };
+    useEffect(()=>{
+        if (prepareData.length > 0) {
+            convertToCSV();
+        }
+    }, [
+        prepareData
+    ]);
     const isDisabled = useMemo(()=>{
         return enteredURL.trim().length === 0 || notAllowed;
     }, [
@@ -27436,6 +27450,6 @@ function App() {
     }, "Fetch"), prepareData.length > 0 && react.createElement("button", {
         className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
         onClick: convertToCSV
-    }, "Convert"))));
+    }, "Download"))));
 }
 mod1.render(react.createElement(rest.StrictMode, null, react.createElement(App, null)), document.getElementById('root'));
