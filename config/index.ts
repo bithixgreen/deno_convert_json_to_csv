@@ -1,5 +1,7 @@
 import { IHeader } from '../model/index.ts';
 
+export const PROXY = 'https://salty-oasis-33931.herokuapp.com/';
+
 export const FILE_NAME = 'Healthcare Reporting'
 
 export const CSV_HEADER: IHeader[] = [

@@ -27297,6 +27297,7 @@ const __default = JSON.parse(`{
     }
   ]
 }`);
+const PROXY = 'https://salty-oasis-33931.herokuapp.com/';
 const FILE_NAME = 'Healthcare Reporting';
 const CSV_HEADER = [
     {
@@ -27384,13 +27385,8 @@ function App() {
     const fetchData = async ()=>{
         setNotAllowed(true);
         try {
-            const jsonResponse = await fetch(enteredURL, {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            const newURL = PROXY + enteredURL;
+            const jsonResponse = await fetch(newURL);
             const data = await jsonResponse.json();
             if (data) {
                 setDemoFile(data);

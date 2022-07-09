@@ -5,7 +5,7 @@ import { ld } from "https://f7oz6xcbryzf3ky2vfb3y7u7x3iq4rg2gyxfnq4s7nt54ofe6rpa
 import { generateCSV } from "./util/index.ts";
 import file from "./static/data/2022-07-01_Acton-Health-Insurance-Trust-HPHC_index.json" assert { type: "json" };
 import { IDoc, IObj, IHeader, IReportTemp, INetwork } from "./model/index.ts";
-import { CSV_HEADER, FILE_NAME } from "./config/index.ts";
+import { CSV_HEADER, FILE_NAME, PROXY } from "./config/index.ts";
 
 function App() {
   const [demofile, setDemoFile] = useState<IDoc>();
@@ -60,11 +60,8 @@ function App() {
     setNotAllowed(true);
 
     try {
-      const jsonResponse = await fetch(enteredURL, {
-        method: "GET",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-      });
+      const newURL = PROXY + enteredURL
+      const jsonResponse = await fetch(newURL);
       const data = await jsonResponse.json();
 
       if (data) {
