@@ -15,8 +15,8 @@ on:
     branches: ["master"]
 
 permissions:
-  contents: read
   id-token: write
+  contents: read
   
 jobs:
   test:
@@ -25,15 +25,10 @@ jobs:
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
-
-      - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@004814556e37c54a2f6e31384c9e18e983317366
-        with:
-          deno-version: v1.x
+        
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: my-project
+          project: deno_convert_json_to_csv
           entrypoint: https://deno.land/std/http/file_server.ts
           root: dist
