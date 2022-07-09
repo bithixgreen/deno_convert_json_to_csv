@@ -27689,6 +27689,60 @@ const generateCSV = (headers, data, filename, cb)=>{
     download(csvData, filename);
     cb();
 };
+const __default = JSON.parse(`{
+  "reporting_entity_name": "Harvard Pilgrim Health Care Inc.",
+  "reporting_entity_type": "THIRD PARTY ADMINISTRATOR",
+  "reporting_structure": [
+    {
+      "reporting_plans": [
+        {
+          "plan_name": "Acton Health Insurance Trust - Best Buy HMO HSA",
+          "plan_id_type": "EIN",
+          "plan_id": "04-6001062",
+          "plan_market_type": "group"
+        }
+      ],
+      "in_network_files": [
+        {
+          "description": "in-network file",
+          "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/2022-07-01_A020-FS_in-network-rates.zip"
+        },
+        {
+          "description": "behavioral-network file",
+          "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/HARVARD-PILGRIM_2000_OBH_MRRF_PRD_20220616143420.zip"
+        }
+      ],
+      "allowed_amount_file": {
+        "description": "allowed-amount file",
+        "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/2022-07-01_A020-FS_allowed-amounts.zip"
+      }
+    },
+    {
+      "reporting_plans": [
+        {
+          "plan_name": "Acton Health Insurance Trust - HMO",
+          "plan_id_type": "EIN",
+          "plan_id": "04-6001062",
+          "plan_market_type": "group"
+        }
+      ],
+      "in_network_files": [
+        {
+          "description": "in-network file",
+          "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/2022-07-01_A008-FS_in-network-rates.zip"
+        },
+        {
+          "description": "behavioral-network file",
+          "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/HARVARD-PILGRIM_2000_OBH_MRRF_PRD_20220616143420.zip"
+        }
+      ],
+      "allowed_amount_file": {
+        "description": "allowed-amount file",
+        "location": "https://eusprdtransparencymrfp32.blob.core.windows.net/hphc/2022-07-01_A008-FS_allowed-amounts.zip"
+      }
+    }
+  ]
+}`);
 const FILE_NAME = 'Healthcare Reporting';
 const CSV_HEADER = [
     {
@@ -27741,7 +27795,7 @@ const CSV_HEADER = [
     }, 
 ];
 function App() {
-    const [demofile, setDemoFile] = useState();
+    const [demofile, setDemoFile] = useState(__default);
     const [csvHeader, setCSVHeader] = useState(CSV_HEADER);
     const [prepareData, setPrepareData] = useState([]);
     const [enteredURL, setEnteredURL] = useState("");
