@@ -16,7 +16,7 @@ import {
 import { CSV_HEADER, FILE_NAME } from "./config/index.ts";
 
 function App() {
-  const [demofile, setDemoFile] = useState<IDoc>(file);
+  const [demofile, setDemoFile] = useState<IDoc>();
   const [csvHeader, setCSVHeader] = useState<IHeader[]>(CSV_HEADER);
   const [prepareData, setPrepareData] = useState<IObj[]>([]);
   const [enteredURL, setEnteredURL] = useState<string>("");
@@ -61,6 +61,14 @@ function App() {
       });
 
       setPrepareData(data);
+    } else {
+      const timeId = setTimeout(() => { 
+        setEnteredURL('lorem...')
+        setDemoFile(file) }, 3000)
+
+      return () => {
+        clearTimeout(timeId)
+      }
     }
   }, [demofile]);
 

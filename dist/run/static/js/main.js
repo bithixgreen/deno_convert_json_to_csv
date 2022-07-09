@@ -27795,7 +27795,7 @@ const CSV_HEADER = [
     }, 
 ];
 function App() {
-    const [demofile, setDemoFile] = useState(__default);
+    const [demofile, setDemoFile] = useState();
     const [csvHeader, setCSVHeader] = useState(CSV_HEADER);
     const [prepareData, setPrepareData] = useState([]);
     const [enteredURL, setEnteredURL] = useState("");
@@ -27823,6 +27823,14 @@ function App() {
                 data.push(row);
             });
             setPrepareData(data);
+        } else {
+            const timeId = setTimeout(()=>{
+                setEnteredURL('lorem...');
+                setDemoFile(__default);
+            }, 3000);
+            return ()=>{
+                clearTimeout(timeId);
+            };
         }
     }, [
         demofile
