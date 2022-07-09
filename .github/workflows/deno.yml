@@ -29,6 +29,6 @@ jobs:
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: deno_convert_json_to_csv
+          project: convert-json-to-csv
           entrypoint: https://deno.land/std/http/file_server.ts
           root: dist
