@@ -62,7 +62,7 @@ function App() {
     try {
       const jsonResponse = await fetch(enteredURL, {
         method: "GET",
-        mode: "cors",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
       });
       const data = await jsonResponse.json();
