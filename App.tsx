@@ -16,7 +16,7 @@ import {
 import { CSV_HEADER, FILE_NAME } from "./config/index.ts";
 
 function App() {
-  const [demofile, setDemoFile] = useState<IDoc>();
+  const [demofile, setDemoFile] = useState<IDoc>(file);
   const [csvHeader, setCSVHeader] = useState<IHeader[]>(CSV_HEADER);
   const [prepareData, setPrepareData] = useState<IObj[]>([]);
   const [enteredURL, setEnteredURL] = useState<string>("");
