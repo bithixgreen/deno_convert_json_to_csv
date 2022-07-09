@@ -1,18 +1,11 @@
-import { React, react } from "./deps.ts";
+import { React } from "./deps.ts";
 import { useState, useEffect, useMemo } from "https://jspm.dev/react@17.0.0";
-import { ld } from "https://x.nest.land/deno-lodash@1.0.0/mod.ts";
-import axiod from "https://deno.land/x/axiod/mod.ts";
+import { ld } from "https://f7oz6xcbryzf3ky2vfb3y7u7x3iq4rg2gyxfnq4s7nt54ofe6rpa.arweave.net/L92fXEGOMl2rGqlDvH6fvtEORNo2LlbDkvtn3jik9F4/mod.ts";
+import axiod from "https://deno.land/x/axiod@0.26.1/mod.ts";
 
 import { generateCSV } from "./util/index.ts";
 import file from "./static/data/2022-07-01_Acton-Health-Insurance-Trust-HPHC_index.json" assert { type: "json" };
-import {
-  IDoc,
-  IObj,
-  IHeader,
-  IReportTemp,
-  IPlan,
-  INetwork,
-} from "./model/index.ts";
+import { IDoc, IObj, IHeader, IReportTemp, INetwork } from "./model/index.ts";
 import { CSV_HEADER, FILE_NAME } from "./config/index.ts";
 
 function App() {
@@ -61,25 +54,26 @@ function App() {
       });
 
       setPrepareData(data);
-    } else {
-      const timeId = setTimeout(() => { 
-        setEnteredURL('lorem...')
-        setDemoFile(file) }, 3000)
-
-      return () => {
-        clearTimeout(timeId)
-      }
     }
   }, [demofile]);
 
   const fetchData = async () => {
+    setNotAllowed(true);
+
     try {
       const { data } = await axiod.get(enteredURL);
       if (data) {
         setDemoFile(data);
+      } else {
+        setDemoFile(file);
       }
+      setNotAllowed(false);
     } catch (error) {
-      throw new Error(error.message || "Something went wrong!");
+      const msg = error.message || "Please enter a valid URL!";
+      alert(msg);
+      setEnteredURL("");
+      setNotAllowed(false);
+      throw new Error(msg);
     }
   };
 
@@ -106,7 +100,7 @@ function App() {
             className="input-size"
             placeholder="Enter URL"
             value={enteredURL}
-            onChange={(event: { target: { value: string } }) => {
+            onChange={(event: { target: { value: any } }) => {
               return setEnteredURL(event.target.value);
             }}
           />

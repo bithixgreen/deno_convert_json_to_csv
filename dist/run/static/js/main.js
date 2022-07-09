@@ -27823,26 +27823,26 @@ function App() {
                 data.push(row);
             });
             setPrepareData(data);
-        } else {
-            const timeId = setTimeout(()=>{
-                setEnteredURL('lorem...');
-                setDemoFile(__default);
-            }, 3000);
-            return ()=>{
-                clearTimeout(timeId);
-            };
         }
     }, [
         demofile
     ]);
     const fetchData = async ()=>{
+        setNotAllowed(true);
         try {
             const { data  } = await axiod.get(enteredURL);
             if (data) {
                 setDemoFile(data);
+            } else {
+                setDemoFile(__default);
             }
+            setNotAllowed(false);
         } catch (error) {
-            throw new Error(error.message || "Something went wrong!");
+            const msg = error.message || "Please enter a valid URL!";
+            alert(msg);
+            setEnteredURL("");
+            setNotAllowed(false);
+            throw new Error(msg);
         }
     };
     const convertToCSV = ()=>{
