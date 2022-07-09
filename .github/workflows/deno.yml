@@ -31,4 +31,4 @@ jobs:
         with:
           project: convert-json-to-csv
           entrypoint: https://deno.land/std/http/file_server.ts
-          root: dist
+          root: dist/build
