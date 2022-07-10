@@ -13,6 +13,7 @@ function App() {
   const [prepareData, setPrepareData] = useState<IObj[]>([]);
   const [enteredURL, setEnteredURL] = useState<string>("");
   const [notAllowed, setNotAllowed] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ function App() {
     setPrepareData([]);
     setEnteredURL("");
     setNotAllowed(false);
+    setIsLoading(false);
   };
 
   const callback = () => {
@@ -70,6 +72,9 @@ function App() {
   };
 
   const fetchData = async () => {
+    if(isLoading) return
+
+    setIsLoading(true);
     setNotAllowed(true);
 
     try {
@@ -96,7 +101,10 @@ function App() {
   };
 
   const convertToCSV = () => {
-    const filename = (enteredURL.split('/').pop() as string).replace('_index.json', '');
+    const filename = (enteredURL.split("/").pop() as string).replace(
+      "_index.json",
+      ""
+    );
     const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
 
     if (isValid) {
@@ -128,7 +136,7 @@ function App() {
               className={`btn-gen ${isDisabled ? "is-disabled" : ""}`}
               onClick={fetchData}
             >
-              Fetch
+              {isLoading ? "Loading..." : "Fetch"}
             </button>
           )}
           {prepareData.length > 0 && (

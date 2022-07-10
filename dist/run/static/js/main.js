@@ -27355,6 +27355,7 @@ function App() {
     const [prepareData, setPrepareData] = useState([]);
     const [enteredURL, setEnteredURL] = useState("");
     const [notAllowed, setNotAllowed] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [logs, setLogs] = useState([]);
     useEffect(()=>{
         if (demofile && lodash.size(demofile)) {
@@ -27388,6 +27389,7 @@ function App() {
         setPrepareData([]);
         setEnteredURL("");
         setNotAllowed(false);
+        setIsLoading(false);
     };
     const callback = ()=>{
         onReset();
@@ -27397,6 +27399,8 @@ function App() {
             ]);
     };
     const fetchData = async ()=>{
+        if (isLoading) return;
+        setIsLoading(true);
         setNotAllowed(true);
         try {
             const newURL = PROXY + enteredURL;
@@ -27417,7 +27421,7 @@ function App() {
         }
     };
     const convertToCSV = ()=>{
-        const filename = enteredURL.split('/').pop().replace('_index.json', '');
+        const filename = enteredURL.split("/").pop().replace("_index.json", "");
         const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
         if (isValid) {
             setNotAllowed(true);
@@ -27447,7 +27451,7 @@ function App() {
     }), !demofile && react.createElement("button", {
         className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
         onClick: fetchData
-    }, "Fetch"), prepareData.length > 0 && react.createElement("button", {
+    }, isLoading ? "Loading..." : "Fetch"), prepareData.length > 0 && react.createElement("button", {
         className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
         onClick: convertToCSV
     }, "Download")), logs.length > 0 && react.createElement("div", {
