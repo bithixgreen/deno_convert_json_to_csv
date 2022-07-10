@@ -27209,6 +27209,58 @@ lodash.prototype.first = lodash.prototype.head;
 if (symIterator$1) {
     lodash.prototype[symIterator$1] = seq.toIterator;
 }
+const PROXY = 'https://salty-oasis-33931.herokuapp.com/';
+const FILE_NAME = 'Healthcare Reporting';
+const CSV_HEADER = [
+    {
+        label: "Plan Number",
+        key: "plan_number"
+    },
+    {
+        label: "reporting_entity_name",
+        key: "reporting_entity_name"
+    },
+    {
+        label: "reporting_entity_type",
+        key: "reporting_entity_type"
+    },
+    {
+        label: "plan_name",
+        key: "plan_name"
+    },
+    {
+        label: "plan_id_type",
+        key: "plan_id_type"
+    },
+    {
+        label: "plan_id",
+        key: "plan_id"
+    },
+    {
+        label: "plan_market_type",
+        key: "plan_market_type"
+    },
+    {
+        label: "net_description_1",
+        key: "net_description_1"
+    },
+    {
+        label: "net_location_1",
+        key: "net_location_1"
+    },
+    {
+        label: "net_description_2",
+        key: "net_description_2"
+    },
+    {
+        label: "net_location_2",
+        key: "net_location_2"
+    },
+    {
+        label: "allowed_location",
+        key: "allowed_location"
+    }, 
+];
 const arrayToCsv = (headers, data)=>{
     const csvRows = [];
     const headerValues = headers.map((header)=>header.label);
@@ -27238,7 +27290,7 @@ const download = (data, fileName)=>{
     element.click();
     document.body.removeChild(element);
 };
-const generateCSV = (headers, data, filename, cb)=>{
+const generateCSV = (headers, data, filename = FILE_NAME, cb)=>{
     const csvData = arrayToCsv(headers, data);
     download(csvData, filename);
     cb();
@@ -27297,58 +27349,6 @@ const __default = JSON.parse(`{
     }
   ]
 }`);
-const PROXY = 'https://salty-oasis-33931.herokuapp.com/';
-const FILE_NAME = 'Healthcare Reporting';
-const CSV_HEADER = [
-    {
-        label: "Plan Number",
-        key: "plan_number"
-    },
-    {
-        label: "reporting_entity_name",
-        key: "reporting_entity_name"
-    },
-    {
-        label: "reporting_entity_type",
-        key: "reporting_entity_type"
-    },
-    {
-        label: "plan_name",
-        key: "plan_name"
-    },
-    {
-        label: "plan_id_type",
-        key: "plan_id_type"
-    },
-    {
-        label: "plan_id",
-        key: "plan_id"
-    },
-    {
-        label: "plan_market_type",
-        key: "plan_market_type"
-    },
-    {
-        label: "net_description_1",
-        key: "net_description_1"
-    },
-    {
-        label: "net_location_1",
-        key: "net_location_1"
-    },
-    {
-        label: "net_description_2",
-        key: "net_description_2"
-    },
-    {
-        label: "net_location_2",
-        key: "net_location_2"
-    },
-    {
-        label: "allowed_location",
-        key: "allowed_location"
-    }, 
-];
 function App() {
     const [demofile, setDemoFile] = useState();
     const [csvHeader, setCSVHeader] = useState(CSV_HEADER);
@@ -27417,10 +27417,11 @@ function App() {
         }
     };
     const convertToCSV = ()=>{
+        const filename = enteredURL.split('/').pop().replace('_index.json', '');
         const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
         if (isValid) {
             setNotAllowed(true);
-            generateCSV(csvHeader, prepareData, FILE_NAME, callback);
+            generateCSV(csvHeader, prepareData, filename, callback);
         }
     };
     const isDisabled = useMemo(()=>{

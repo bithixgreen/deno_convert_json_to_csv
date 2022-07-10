@@ -1,3 +1,4 @@
+import { FILE_NAME } from "../config/index.ts";
 import { IHeader, IObj } from "../model/index.ts";
 
 // TODO: Function to convert the JSON(Array of objects) to CSV.
@@ -36,7 +37,7 @@ const download = (data: string, fileName: string) => {
 export const generateCSV = (
   headers: IHeader[],
   data: IObj[],
-  filename: string,
+  filename = FILE_NAME,
   cb: () => void
 ) => {
   const csvData = arrayToCsv(headers, data);

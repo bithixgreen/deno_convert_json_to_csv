@@ -96,11 +96,12 @@ function App() {
   };
 
   const convertToCSV = () => {
+    const filename = (enteredURL.split('/').pop() as string).replace('_index.json', '');
     const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
 
     if (isValid) {
       setNotAllowed(true);
-      generateCSV(csvHeader, prepareData, FILE_NAME, callback);
+      generateCSV(csvHeader, prepareData, filename, callback);
     }
   };
 
