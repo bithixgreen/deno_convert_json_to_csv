@@ -55,6 +55,11 @@
 }
 
 .btn-gen.is-disabled {
-    pointer-events: none;
-    opacity: 0.5;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.logs p,
+.logs p a {
+  white-space: nowrap;
 }
