@@ -6,6 +6,7 @@ import { generateCSV } from "./util/index.ts";
 import file from "./static/data/2022-07-01_Acton-Health-Insurance-Trust-HPHC_index.json" assert { type: "json" };
 import { IDoc, IObj, IHeader, IReportTemp, INetwork } from "./model/index.ts";
 import { CSV_HEADER, FILE_NAME, PROXY } from "./config/index.ts";
+import Button from "./components/Button.tsx";
 
 function App() {
   const [demofile, setDemoFile] = useState<IDoc>();
@@ -72,7 +73,7 @@ function App() {
   };
 
   const fetchData = async () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     setIsLoading(true);
     setNotAllowed(true);
@@ -87,13 +88,12 @@ function App() {
       } else {
         setDemoFile(file);
       }
-
-      setNotAllowed(false);
     } catch (error) {
       const msg = error.message || "Please enter a valid URL!";
 
       alert(msg);
       setEnteredURL("");
+      setIsLoading(false);
       setNotAllowed(false);
 
       throw new Error(msg);
@@ -101,10 +101,8 @@ function App() {
   };
 
   const convertToCSV = () => {
-    const filename = (enteredURL.split("/").pop() as string).replace(
-      "_index.json",
-      ""
-    );
+    const raw = enteredURL.split("/").pop() || "";
+    const filename = raw.replace("_index.json", "");
     const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
 
     if (isValid) {
@@ -114,7 +112,7 @@ function App() {
   };
 
   const isDisabled = useMemo(() => {
-    return (enteredURL as string).trim().length === 0 || notAllowed;
+    return (enteredURL || "").trim().length === 0 || notAllowed;
   }, [enteredURL]);
 
   return (
@@ -127,25 +125,23 @@ function App() {
             className="input-size"
             placeholder="Enter URL"
             value={enteredURL}
-            onChange={(event: { target: { value: any } }) => {
+            onChange={(event: { target: { value: string } }) => {
               return setEnteredURL(event.target.value);
             }}
           />
           {!demofile && (
-            <button
-              className={`btn-gen ${isDisabled ? "is-disabled" : ""}`}
+            <Button
+              label={isLoading ? "Loading..." : "Fetch"}
               onClick={fetchData}
-            >
-              {isLoading ? "Loading..." : "Fetch"}
-            </button>
+              isDisabled={isDisabled}
+            />
           )}
           {prepareData.length > 0 && (
-            <button
-              className={`btn-gen ${isDisabled ? "is-disabled" : ""}`}
+            <Button
+              label={"Download"}
               onClick={convertToCSV}
-            >
-              Download
-            </button>
+              isDisabled={isDisabled}
+            />
           )}
         </div>
         {logs.length > 0 && (

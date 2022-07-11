@@ -27349,6 +27349,12 @@ const __default = JSON.parse(`{
     }
   ]
 }`);
+const Button = ({ label , isDisabled , onClick  })=>{
+    return react.createElement("button", {
+        className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
+        onClick: onClick
+    }, label);
+};
 function App() {
     const [demofile, setDemoFile] = useState();
     const [csvHeader, setCSVHeader] = useState(CSV_HEADER);
@@ -27411,17 +27417,18 @@ function App() {
             } else {
                 setDemoFile(__default);
             }
-            setNotAllowed(false);
         } catch (error) {
             const msg = error.message || "Please enter a valid URL!";
             alert(msg);
             setEnteredURL("");
+            setIsLoading(false);
             setNotAllowed(false);
             throw new Error(msg);
         }
     };
     const convertToCSV = ()=>{
-        const filename = enteredURL.split("/").pop().replace("_index.json", "");
+        const raw = enteredURL.split("/").pop() || "";
+        const filename = raw.replace("_index.json", "");
         const isValid = FILE_NAME && csvHeader && prepareData.length > 0;
         if (isValid) {
             setNotAllowed(true);
@@ -27429,7 +27436,7 @@ function App() {
         }
     };
     const isDisabled = useMemo(()=>{
-        return enteredURL.trim().length === 0 || notAllowed;
+        return (enteredURL || "").trim().length === 0 || notAllowed;
     }, [
         enteredURL
     ]);
@@ -27448,13 +27455,15 @@ function App() {
         onChange: (event)=>{
             return setEnteredURL(event.target.value);
         }
-    }), !demofile && react.createElement("button", {
-        className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
-        onClick: fetchData
-    }, isLoading ? "Loading..." : "Fetch"), prepareData.length > 0 && react.createElement("button", {
-        className: `btn-gen ${isDisabled ? "is-disabled" : ""}`,
-        onClick: convertToCSV
-    }, "Download")), logs.length > 0 && react.createElement("div", {
+    }), !demofile && react.createElement(Button, {
+        label: isLoading ? "Loading..." : "Fetch",
+        onClick: fetchData,
+        isDisabled: isDisabled
+    }), prepareData.length > 0 && react.createElement(Button, {
+        label: "Download",
+        onClick: convertToCSV,
+        isDisabled: isDisabled
+    })), logs.length > 0 && react.createElement("div", {
         className: "wrap no-border"
     }, react.createElement("h3", null, "Logs:"), react.createElement("div", {
         className: "logs"
